@@ -83,7 +83,7 @@ def less(path):
         return path
 
     directory, filename = os.path.split(encoded_full_path)
-    output_directory = os.path.join(directory, LESS_OUTPUT_DIR)
+    output_directory = directory #os.path.join(directory, LESS_OUTPUT_DIR)
     hashed_mtime = get_hashed_mtime(full_path)
     base_filename = os.path.splitext(filename)[0]
     compiled_filename = "%s-%s.css" % (base_filename, hashed_mtime)
@@ -119,6 +119,7 @@ def less(path):
             logger.error(errors)
             return path
 
-    output_url = os.path.join(os.path.dirname(path), LESS_OUTPUT_DIR,
+    output_url = os.path.join(os.path.dirname(path),
+                              #LESS_OUTPUT_DIR,
                               compiled_filename)
     return output_url
