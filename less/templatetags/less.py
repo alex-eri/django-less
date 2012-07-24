@@ -67,6 +67,7 @@ def do_inlineless(parser, token):
 @register.simple_tag
 def less(path):
     STATIC_URL = settings.STATIC_URL
+    STATIC_ROOT = settings.STATIC_ROOT
 
     # locate the static file
     encoded_full_path = full_path = find(path)
@@ -83,7 +84,8 @@ def less(path):
         return path
 
     directory, filename = os.path.split(encoded_full_path)
-    output_directory = os.path.join(directory, LESS_OUTPUT_DIR)
+    output_directory = os.path.join(STATIC_ROOT, LESS_OUTPUT_DIR, os.path.dirname(path))
+
     hashed_mtime = get_hashed_mtime(full_path)
     base_filename = os.path.splitext(filename)[0]
     compiled_filename = "%s-%s.css" % (base_filename, hashed_mtime)
@@ -119,7 +121,7 @@ def less(path):
             logger.error(errors)
             return path
 
-    output_url = os.path.join(os.path.dirname(path),
-                              LESS_OUTPUT_DIR,
-                              compiled_filename)
+    output_url = os.path.join(LESS_OUTPUT_DIR,
+                            os.path.dirname(path),
+                            compiled_filename)
     return output_url
